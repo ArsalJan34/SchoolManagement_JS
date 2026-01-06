@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+</head>
+
+<body>
+  <h1>Teacher Management</h1>
+  <div>
+    <input id="tname" placeholder="Teacher Name">
+    <input id="tsubject" placeholder="Teacher Subject">
+    <button onclick="addTeacher()">Add Teacher</button>
+  </div>
+
+
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Subject</th>
+        <th>Action</th>
+      </tr>
+    <tbody id="teacher-table"></tbody>
+    </thead>
+  </table>
+  <script>
+
+    const studentsTable = document.getElementById('students-table');
+
+    // Load students from Firestore
+    db.collection('students').get().then(snapshot => {
+      snapshot.docs.forEach(doc => {
+        const s = doc.data();
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${s.name}</td>
+          <td>${s.age}</td>
+          <td>${s.gender}</td>
+          <td>${s.city}</td>
+          <td><button onclick="deleteStudent('${doc.id}')">Delete</button></td>
+        `;
+        studentsTable.appendChild(tr);
+      });
+    });
+
+    // Add student function
+    function addStudent() {
+      const name = document.getElementById('sname').value;
+      const age = Number(document.getElementById('sage').value);
+      const gender = document.getElementById('sgender').value;
+      const city = document.getElementById('scity').value;
+      if (!name || !age || !gender || !city)
+        return alert("Please fill all fields!");
+
+      db.collection('students').add({ name, age, gender, city })
+        .then(() => {
+          alert("Student added!");
+          location.reload(); // Reload to show new student
+        });
+    }
+
+    // Delete student function
+    function deleteStudent(id) {
+      db.collection('students').doc(id).delete()
+        .then(() => location.reload());
+    }
+    const teacherTable = document.getElementById('teacher-table');
+
+    db.collection('teachers').get().then(snapshot => {
+      snapshot.docs.forEach(doc => {
+        const t = doc.data()
+        const tr = document.createElement('tr')
+        tr.innerHTML = `
+        <td>${t.name}</td>
+        <td>${t.subject}</td>
+        <td><button onclick="deleteTeacher('${doc.id}')">
+          Delete</button></td>`;
+        teacherTable.appendChild(tr);
+      });
+    });
+    function addTeacher() {
+      const name = document.getElementById('tname').value;
+      const subject = document.getElementById('tsubject').value;
+      if (!name || !subject)
+        return alert("Pleae fill all the field");
+
+      db.collection('teachers').add({ name, subject }).then(() => {
+        alert("Teacher added!");
+        location.reload();
+      });
+    }
+    function deleteTeacher(id) {
+      db.collection('teachers').doc(id).delete().then(() => location.reload());
+    }
+  </script>
+</body>
+
+</html>
