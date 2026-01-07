@@ -20,16 +20,7 @@
   </div>
 
 
-  <table border="1">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Subject</th>
-        <th>Action</th>
-      </tr>
-    <tbody id="teacher-table"></tbody>
-    </thead>
-  </table>
+
   <script>
 
 
@@ -44,9 +35,7 @@
         location.reload();
       });
     }
-    function deleteTeacher(id) {
-      db.collection('teachers').doc(id).delete().then(() => location.reload());
-    }
+
   </script>
 </body>
 

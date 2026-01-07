@@ -29,6 +29,16 @@
     <tbody id="students-table"></tbody>
   </table>
   <h2>Teacher Data</h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Subject</th>
+          <th>Action</th>
+        </tr>
+      <tbody id="teacher-table"></tbody>
+      </thead>
+    </table>
   <script>
 
     const studentsTable = document.getElementById('students-table');
@@ -70,6 +80,9 @@
           teacherTable.appendChild(tr);
         });
       });
+          function deleteTeacher(id) {
+              db.collection('teachers').doc(id).delete().then(() => location.reload());
+            }
   </script>
 </body>
 
