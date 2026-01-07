@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+</head>
+
+<body>
+  <h1>Teacher Management</h1>
+  <div>
+    <input id="tname" placeholder="Teacher Name">
+    <input id="tsubject" placeholder="Teacher Subject">
+    <button onclick="addTeacher()">Add Teacher</button>
+  </div>
+
+
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Subject</th>
+        <th>Action</th>
+      </tr>
+    <tbody id="teacher-table"></tbody>
+    </thead>
+  </table>
+  <script>
+
+
+    function addTeacher() {
+      const name = document.getElementById('tname').value;
+      const subject = document.getElementById('tsubject').value;
+      if (!name || !subject)
+        return alert("Pleae fill all the field");
+
+      db.collection('teachers').add({ name, subject }).then(() => {
+        alert("Teacher added!");
+        location.reload();
+      });
+    }
+    function deleteTeacher(id) {
+      db.collection('teachers').doc(id).delete().then(() => location.reload());
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+</head>
+
+<body>
+  <h1>Admin Dashboard</h1>
+
+<h2>Student Data</h2>
+  <!-- Students Table -->
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>City</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="students-table"></tbody>
+  </table>
+  <h2>Teacher Data</h2>
+  <script>
+
+    const studentsTable = document.getElementById('students-table');
+
+    // Load students from Firestore
+    db.collection('students').get().then(snapshot => {
+      snapshot.docs.forEach(doc => {
+        const s = doc.data();
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${s.name}</td>
+          <td>${s.age}</td>
+          <td>${s.gender}</td>
+          <td>${s.city}</td>
+          <td><button onclick="deleteStudent('${doc.id}')">Delete</button></td>
+        `;
+        studentsTable.appendChild(tr);
+      });
+    });
+
+
+
+    // Delete student function
+    function deleteStudent(id) {
+      db.collection('students').doc(id).delete()
+        .then(() => location.reload());
+    }
+    const teacherTable = document.getElementById('teacher-table');
+
+      db.collection('teachers').get().then(snapshot => {
+        snapshot.docs.forEach(doc => {
+          const t = doc.data()
+          const tr = document.createElement('tr')
+          tr.innerHTML = `
+        <td>${t.name}</td>
+        <td>${t.subject}</td>
+        <td><button onclick="deleteTeacher('${doc.id}')">
+          Delete</button></td>`;
+          teacherTable.appendChild(tr);
+        });
+      });
+  </script>
+</body>
+
+</html>

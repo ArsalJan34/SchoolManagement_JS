@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+</head>
+
+<body>
+  <h1>Student Management</h1>
+
+  <!-- Add Student Section -->
+  <div>
+    <input id="sname" placeholder="Student Name">
+    <input id="sage" type="number" placeholder="Age">
+    <input id="sgender" placeholder="Gender">
+    <input id="scity" placeholder="City">
+    <button onclick="addStudent()">Add Student</button>
+  </div>
+
+<script>
+    // Add student function
+    function addStudent() {
+      const name = document.getElementById('sname').value;
+      const age = Number(document.getElementById('sage').value);
+      const gender = document.getElementById('sgender').value;
+      const city = document.getElementById('scity').value;
+      if (!name || !age || !gender || !city)
+        return alert("Please fill all fields!");
+
+      db.collection('students').add({ name, age, gender, city })
+        .then(() => {
+          alert("Student added!");
+          location.reload(); // Reload to show new student
+        });
+    }
+
+  </script>
+</body>
+
+</html>
